@@ -9,14 +9,24 @@ package org.usfirst.frc.team3648.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import org.usfirst.frc.team3648.robot.Buttons;
+import edu.wpi.first.wpilibj.Compressor;
 
 public class Robot extends IterativeRobot {
 	//Define the controller and port (0)
 	private Joystick driveController = new Joystick(0);
+	
+	//Define Pneumatics
+	
+	Compressor compressor = new Compressor(0);
+	
+	Solenoid solenoid = new Solenoid(1);
+	
+	boolean enabled;
 	
 	//Define the spark (motor controller) for each wheel. The number in parentheses is the port it is on in the roboRio
 	private Spark frontLeft = new Spark(0);
@@ -46,6 +56,8 @@ public class Robot extends IterativeRobot {
 		backLeft.setInverted(true);
 		backRight.setInverted(true);
 		frontRight.setInverted(true);
+		
+		enabled = compressor.enabled();
 	}
 
 	@Override
@@ -57,15 +69,17 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
+		
 	}
 
 	/**
 	 * This function is called periodically during operator control.
+	 * @param axis 
 	 */
 	@Override
 	public void teleopPeriodic() {
 		//Drive the chassis at a speed decided by the joystick position * the speed modifier. 1 is full speed forward, -1 is full speed backward
-		drive.tankDrive(driveController.getRawAxis(5)*motorMod, driveController.getRawAxis(1)*motorMod);
+		drive.tankDrive(driveController.getRawAxis(1)*motorMod, driveController.getRawAxis(5)*motorMod);
 		
 		//Change the speed modifier based on the trigger being held. Lets us have a slow, normal, and fast mode
 		if(driveController.	getRawAxis(2)>0.5){
@@ -77,10 +91,24 @@ public class Robot extends IterativeRobot {
 		}
 		
 		if(driveController.getRawButton(Buttons.X)){
-			flywheel.set(1);
-			flywheel.set(1);
+			flywheel.set(-1);
+			flywheel.set(-1);
 		}else {
 			flywheel.set(0);
+		}
+		if(driveController.getRawButton(Buttons.B)) {
+			compressor.setClosedLoopControl(true);
+		}else {
+			compressor.setClosedLoopControl(false);
+		
+		}
+		   
+		if(driveController.getRawButton(4)) {
+			solenoid.set(true);
+		}
+		
+		if(driveController.getRawButton(1)) {
+			solenoid.set(false);
 		}
 	}
 
