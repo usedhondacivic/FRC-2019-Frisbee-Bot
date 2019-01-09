@@ -7,7 +7,7 @@
 
 package org.usfirst.frc.team3648.robot;
 
-import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import org.usfirst.frc.team3648.robot.Buttons;
 import edu.wpi.first.wpilibj.Compressor;
 
-public class Robot extends IterativeRobot {
+public class Robot extends TimedRobot {
 	//Define the controller and port (0)
 	private Joystick driveController = new Joystick(0);
 	
@@ -24,7 +24,7 @@ public class Robot extends IterativeRobot {
 	
 	Compressor compressor = new Compressor(0);
 	
-	Solenoid solenoid = new Solenoid(1);
+	Solenoid solenoid = new Solenoid(0);
 	
 	boolean enabled;
 	
@@ -96,6 +96,7 @@ public class Robot extends IterativeRobot {
 		}else {
 			flywheel.set(0);
 		}
+
 		if(driveController.getRawButton(Buttons.B)) {
 			compressor.setClosedLoopControl(true);
 		}else {
