@@ -98,10 +98,9 @@ public class Robot extends TimedRobot {
 		}
 
 		if(driveController.getRawButton(Buttons.B)) {
-			compressor.setClosedLoopControl(true);
-		}else {
 			compressor.setClosedLoopControl(false);
-		
+		}else {
+			compressor.setClosedLoopControl(true);
 		}
 		   
 		if(driveController.getRawButton(4)) {
